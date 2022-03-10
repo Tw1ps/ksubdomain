@@ -1,16 +1,18 @@
 package options
 
 import (
-	"github.com/boy-hack/ksubdomain/core"
-	"github.com/boy-hack/ksubdomain/core/gologger"
 	"os"
 	"strconv"
+
+	"github.com/boy-hack/ksubdomain/core"
+	"github.com/boy-hack/ksubdomain/core/gologger"
 )
 
 type Options struct {
 	Rate         int64
 	Domain       []string
-	FileName     string // 字典文件名
+	FileName     string   // 字典文件名
+	ExtraDict    []string // 额外字典
 	Resolvers    []string
 	Output       string // 输出文件名
 	Silent       bool

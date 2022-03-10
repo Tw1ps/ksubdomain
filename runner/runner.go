@@ -4,6 +4,12 @@ import (
 	"bufio"
 	"context"
 	"fmt"
+	"math"
+	"math/rand"
+	"os"
+	"strings"
+	"time"
+
 	"github.com/boy-hack/ksubdomain/core"
 	"github.com/boy-hack/ksubdomain/core/device"
 	"github.com/boy-hack/ksubdomain/core/gologger"
@@ -12,11 +18,6 @@ import (
 	"github.com/google/gopacket/pcap"
 	"github.com/phayes/freeport"
 	"go.uber.org/ratelimit"
-	"math"
-	"math/rand"
-	"os"
-	"strings"
-	"time"
 )
 
 type runner struct {
@@ -39,6 +40,10 @@ type runner struct {
 	fisrtloadChanel chan string // 数据加载完毕的chanel
 	startTime       time.Time
 	domains         []string
+}
+
+func (r *runner) GetRecver() chan result {
+	return r.recver
 }
 
 func GetDeviceConfig() *device.EtherTable {
@@ -81,7 +86,7 @@ func New(options *options2.Options) (*runner, error) {
 	}
 
 	// 根据发包总数和timeout时间来分配每秒速度
-	allPacket := r.loadTargets()
+	allPacket := r.loadTargets(options.ExtraDict)
 	if options.Level > 2 {
 		allPacket = allPacket * int(math.Pow(float64(len(options.LevelDomains)), float64(options.Level-2)))
 	}
@@ -137,7 +142,7 @@ func (r *runner) choseDns() string {
 	return dns[rand.Intn(len(dns))]
 }
 
-func (r *runner) loadTargets() int {
+func (r *runner) loadTargets(extraDict []string) int {
 	// get targets
 	var reader *bufio.Reader
 	options := r.options
@@ -208,6 +213,20 @@ func (r *runner) loadTargets() int {
 			}
 		}
 	}
+
+	for _, v := range extraDict {
+		if r.options.Method == "verify" {
+			// send msg
+			continue
+			// r.domains = append(r.domains, v)
+		} else {
+			for _, tmpDomain := range r.options.Domain {
+				newDomain := v + "." + tmpDomain
+				r.domains = append(r.domains, newDomain)
+			}
+		}
+	}
+
 	return len(r.domains)
 }
 func (r *runner) PrintStatus() {
