@@ -36,6 +36,8 @@ func (r *runner) handleResult(ctx context.Context) {
 	for result := range r.recver {
 		var msg string
 
+		r.Results = append(r.Results, result)
+
 		if onlyDomain {
 			msg = result.Subdomain
 		} else {

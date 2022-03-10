@@ -40,6 +40,7 @@ type runner struct {
 	fisrtloadChanel chan string // 数据加载完毕的chanel
 	startTime       time.Time
 	domains         []string
+	Results         []result
 }
 
 func (r *runner) GetRecver() chan result {
