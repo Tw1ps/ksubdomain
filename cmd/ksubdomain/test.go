@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/boy-hack/ksubdomain/runner"
+	"github.com/Tw1ps/ksubdomain/runner"
 	"github.com/urfave/cli/v2"
 )
 

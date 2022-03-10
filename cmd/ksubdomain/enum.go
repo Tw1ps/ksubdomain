@@ -1,10 +1,10 @@
 package main
 
 import (
-	"github.com/boy-hack/ksubdomain/core"
-	"github.com/boy-hack/ksubdomain/core/gologger"
-	"github.com/boy-hack/ksubdomain/core/options"
-	"github.com/boy-hack/ksubdomain/runner"
+	"github.com/Tw1ps/ksubdomain/core"
+	"github.com/Tw1ps/ksubdomain/core/gologger"
+	"github.com/Tw1ps/ksubdomain/core/options"
+	"github.com/Tw1ps/ksubdomain/runner"
 	"github.com/urfave/cli/v2"
 )
 

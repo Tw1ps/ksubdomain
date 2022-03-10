@@ -3,10 +3,11 @@ package runner
 import (
 	"bufio"
 	"context"
-	"github.com/boy-hack/ksubdomain/core"
-	"github.com/boy-hack/ksubdomain/core/gologger"
 	"os"
 	"strings"
+
+	"github.com/Tw1ps/ksubdomain/core"
+	"github.com/Tw1ps/ksubdomain/core/gologger"
 )
 
 func (r *runner) handleResult(ctx context.Context) {

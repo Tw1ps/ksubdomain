@@ -3,13 +3,14 @@ package device
 import (
 	"context"
 	"fmt"
-	"github.com/boy-hack/ksubdomain/core"
-	"github.com/boy-hack/ksubdomain/core/gologger"
+	"net"
+	"time"
+
+	"github.com/Tw1ps/ksubdomain/core"
+	"github.com/Tw1ps/ksubdomain/core/gologger"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
-	"net"
-	"time"
 )
 
 func AutoGetDevices() *EtherTable {

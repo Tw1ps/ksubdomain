@@ -1,9 +1,10 @@
 package runner
 
 import (
-	"github.com/boy-hack/ksubdomain/core/options"
 	"path/filepath"
 	"testing"
+
+	"github.com/Tw1ps/ksubdomain/core/options"
 )
 
 func TestVerify(t *testing.T) {

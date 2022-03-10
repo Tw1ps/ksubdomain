@@ -2,15 +2,16 @@ package runner
 
 import (
 	"context"
-	"github.com/boy-hack/ksubdomain/core/device"
-	"github.com/boy-hack/ksubdomain/core/gologger"
-	"github.com/boy-hack/ksubdomain/runner/statusdb"
-	"github.com/google/gopacket"
-	"github.com/google/gopacket/layers"
-	"github.com/google/gopacket/pcap"
 	"net"
 	"sync/atomic"
 	"time"
+
+	"github.com/Tw1ps/ksubdomain/core/device"
+	"github.com/Tw1ps/ksubdomain/core/gologger"
+	"github.com/Tw1ps/ksubdomain/runner/statusdb"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/layers"
+	"github.com/google/gopacket/pcap"
 )
 
 func (r *runner) sendCycle(ctx context.Context) {

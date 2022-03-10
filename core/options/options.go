@@ -4,8 +4,8 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/boy-hack/ksubdomain/core"
-	"github.com/boy-hack/ksubdomain/core/gologger"
+	"github.com/Tw1ps/ksubdomain/core"
+	"github.com/Tw1ps/ksubdomain/core/gologger"
 )
 
 type Options struct {

@@ -1,4 +1,4 @@
-module github.com/boy-hack/ksubdomain
+module github.com/Tw1ps/ksubdomain
 
 go 1.17
 
