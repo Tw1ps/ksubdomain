@@ -136,7 +136,8 @@ func (r *runner) recvChanel(ctx context.Context) error {
 			}
 			if flag {
 				sd := core.Dismantl_domain(subdomain)
-				if len(strings.Split(sd.Subdomain, ".")) == 1 {
+				subLevel := len(strings.Split(sd.Subdomain, "."))
+				if subLevel < r.options.Level-1 {
 					go func() {
 						if r.options.Method == "enum" && r.options.Level > 2 {
 							r.iterDomains(r.options.Level, subdomain)
