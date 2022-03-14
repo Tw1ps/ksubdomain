@@ -41,6 +41,7 @@ type runner struct {
 	startTime       time.Time
 	domains         []string
 	Results         []result
+	WildCard        map[string]string
 }
 
 func (r *runner) GetRecver() chan result {
@@ -180,16 +181,22 @@ func (r *runner) loadTargets(extraDict []string) int {
 		}
 
 		if options.SkipWildCard && len(options.Domain) > 0 {
-			var tmpDomains []string
 			gologger.Infof("检测泛解析\n")
 			for _, domain := range options.Domain {
-				if !core.IsWildCard(domain) {
-					tmpDomains = append(tmpDomains, domain)
-				} else {
-					gologger.Warningf("域名:%s 存在泛解析记录,已跳过\n", domain)
+				ret, flag := core.IsWildCard(domain)
+				if flag {
+					var tmpResult result
+					tmpResult.Subdomain = ret.Domain
+					for _, ip := range ret.IP {
+						tmpIP := string(ip)
+						r.WildCard[tmpIP] = ret.Domain
+						// r.WildCard[ret.Domain] = tmpIP
+						tmpResult.Answers = append(tmpResult.Answers, tmpIP)
+					}
+					r.Results = append(r.Results, tmpResult)
+					gologger.Warningf("域名:%s 存在泛解析记录\n", domain)
 				}
 			}
-			options.Domain = tmpDomains
 		}
 	}
 

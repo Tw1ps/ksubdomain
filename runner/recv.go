@@ -4,11 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sync/atomic"
+	"time"
+
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
-	"sync/atomic"
-	"time"
 )
 
 func dnsRecord2String(rr layers.DNSResourceRecord) (string, error) {
@@ -112,6 +113,7 @@ func (r *runner) recvChanel(ctx context.Context) error {
 		subdomain := string(dns.Questions[0].Name)
 		r.hm.Del(subdomain)
 		if dns.ANCount > 0 {
+			flag := true
 			atomic.AddUint64(&r.successIndex, 1)
 			var answers []string
 			for _, v := range dns.Answers {
@@ -119,12 +121,22 @@ func (r *runner) recvChanel(ctx context.Context) error {
 				if err != nil {
 					continue
 				}
+
+				_, check := r.WildCard[answer]
+				if check {
+					flag = false
+					break
+				}
+
 				answers = append(answers, answer)
 			}
-			r.recver <- result{
-				Subdomain: subdomain,
-				Answers:   answers,
+			if flag {
+				r.recver <- result{
+					Subdomain: subdomain,
+					Answers:   answers,
+				}
 			}
+
 		}
 	}
 }
