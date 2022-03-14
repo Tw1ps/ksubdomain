@@ -137,7 +137,6 @@ func (r *runner) iterDomains(level int, domain string) {
 	for _, levelMsg := range r.options.LevelDomains {
 		tmpDomain := fmt.Sprintf("%s.%s", levelMsg, domain)
 		r.sender <- tmpDomain
-		r.iterDomains(level-1, tmpDomain)
 	}
 }
 func (r *runner) choseDns() string {
