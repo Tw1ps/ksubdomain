@@ -131,6 +131,12 @@ func (r *runner) recvChanel(ctx context.Context) error {
 				answers = append(answers, answer)
 			}
 			if flag {
+				go func() {
+					if r.options.Method == "enum" && r.options.Level > 2 {
+						r.iterDomains(r.options.Level, subdomain)
+					}
+				}()
+
 				r.recver <- result{
 					Subdomain: subdomain,
 					Answers:   answers,

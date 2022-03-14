@@ -120,9 +120,9 @@ func New(options *options2.Options) (*runner, error) {
 	go func() {
 		for _, msg := range r.domains {
 			r.sender <- msg
-			if options.Method == "enum" && options.Level > 2 {
-				r.iterDomains(options.Level, msg)
-			}
+			// if options.Method == "enum" && options.Level > 2 {
+			// 	r.iterDomains(options.Level, msg)
+			// }
 		}
 		r.domains = nil
 		r.fisrtloadChanel <- "ok"
