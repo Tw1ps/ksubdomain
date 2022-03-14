@@ -77,6 +77,7 @@ func New(options *options2.Options) (*runner, error) {
 	r := new(runner)
 	gologger.Infof(version + "\n")
 
+	r.WildCard = make(map[string]string)
 	r.options = options
 	r.ether = GetDeviceConfig()
 	r.hm = statusdb.CreateMemoryDB()
@@ -188,7 +189,7 @@ func (r *runner) loadTargets(extraDict []string) int {
 					var tmpResult result
 					tmpResult.Subdomain = ret.Domain
 					for _, ip := range ret.IP {
-						tmpIP := string(ip)
+						tmpIP := string(ip.String())
 						r.WildCard[tmpIP] = ret.Domain
 						// r.WildCard[ret.Domain] = tmpIP
 						tmpResult.Answers = append(tmpResult.Answers, tmpIP)
@@ -234,7 +235,6 @@ func (r *runner) loadTargets(extraDict []string) int {
 			}
 		}
 	}
-
 	return len(r.domains)
 }
 func (r *runner) PrintStatus() {
@@ -261,7 +261,7 @@ func (r *runner) RunEnumeration() {
 			if isLoadOver {
 				if r.hm.Length() == 0 {
 					gologger.Printf("\n")
-					gologger.Infof("扫描完毕")
+					gologger.Infof("扫描完毕\n")
 					return
 				}
 			}
