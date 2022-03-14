@@ -2,11 +2,13 @@ package core
 
 import (
 	"bufio"
-	"golang.org/x/crypto/ssh/terminal"
+	"io/ioutil"
 	"math/rand"
 	"os"
 	"strings"
 	"time"
+
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 func RandomStr(n int) string {
@@ -77,4 +79,36 @@ func SliceToString(items []string) string {
 	ret.WriteString(strings.Join(items, ","))
 	ret.WriteString("]")
 	return ret.String()
+}
+
+func Load_text(filename string) (string, error) {
+	f, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return "", err
+	}
+	return string(f), err
+}
+
+type Decompose struct {
+	Subdomain string `json:"subdomain"`
+	Domain    string `json:"domain"`
+	Suffix    string `json:"suffix"`
+}
+
+func Dismantl_domain(host string) Decompose {
+	var ret Decompose
+	public_suffix_list, err := Load_text("./data/public_suffix_list.bat")
+	if err != nil {
+		return ret
+	}
+	data := strings.Split(host, ".")
+	for i, _ := range data {
+		suffix := strings.Join(data[i:], ".")
+		if find := strings.Contains(public_suffix_list, suffix); find {
+			ret.Subdomain = strings.Join(data[:i-1], ".")
+			ret.Domain = data[i-1]
+			ret.Suffix = suffix
+		}
+	}
+	return ret
 }

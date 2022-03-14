@@ -4,8 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 	"sync/atomic"
 	"time"
+
+	"github.com/Tw1ps/ksubdomain/core"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
@@ -131,11 +134,14 @@ func (r *runner) recvChanel(ctx context.Context) error {
 				answers = append(answers, answer)
 			}
 			if flag {
-				go func() {
-					if r.options.Method == "enum" && r.options.Level > 2 {
-						r.iterDomains(r.options.Level, subdomain)
-					}
-				}()
+				sd := core.Dismantl_domain(subdomain)
+				if len(strings.Split(sd.Subdomain, ".")) == 1 {
+					go func() {
+						if r.options.Method == "enum" && r.options.Level > 2 {
+							r.iterDomains(r.options.Level, subdomain)
+						}
+					}()
+				}
 
 				r.recver <- result{
 					Subdomain: subdomain,
