@@ -31,7 +31,7 @@ type runner struct {
 	recvIndex       uint64
 	faildIndex      uint64
 	sender          chan string
-	recver          chan result
+	recver          chan Result
 	freeport        int
 	dnsid           uint16 // dnsid 用于接收的确定ID
 	maxRetry        int    // 最大重试次数
@@ -40,12 +40,8 @@ type runner struct {
 	fisrtloadChanel chan string // 数据加载完毕的chanel
 	startTime       time.Time
 	domains         []string
-	Results         []result
+	Results         []Result
 	WildCard        map[string]string
-}
-
-func (r *runner) GetRecver() chan result {
-	return r.recver
 }
 
 func GetDeviceConfig() *device.EtherTable {
@@ -103,7 +99,7 @@ func New(options *options2.Options) (*runner, error) {
 	gologger.Infof("Rate:%dpps\n", limit)
 
 	r.sender = make(chan string, 99) // 多个协程发送
-	r.recver = make(chan result, 99) // 多个协程接收
+	r.recver = make(chan Result, 99) // 多个协程接收
 
 	freePort, err := freeport.GetFreePort()
 	if err != nil {
@@ -185,7 +181,7 @@ func (r *runner) loadTargets(extraDict []string) int {
 			for _, domain := range options.Domain {
 				ret, flag := core.IsWildCard(domain)
 				if flag {
-					var tmpResult result
+					var tmpResult Result
 					tmpResult.Subdomain = ret.Domain
 					for _, ip := range ret.IP {
 						tmpIP := string(ip.String())
